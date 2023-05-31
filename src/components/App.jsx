@@ -1,43 +1,26 @@
 import { useEffect } from "react";
-import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { change } from "redux/contacts/contatctsSlice";
 import { ContactForm } from "./contactForm/ContactForm";
 import { ContactList } from "./contactList/ContactList";
 import { FilterContacts } from "./filter/FilterContacts";
 import { Layout } from "./GlobalStyles.styled";
 
 export const App = () => {
-  const [contacts, setContacts] = useState([]);
-  const [filter, setFilter] = useState('');
+  const dispatch = useDispatch();
+  const filter = useSelector(state => state.filter.search)
+  const contacts = useSelector(state => state.contacts.array)
 
   useEffect(()=> {
     const contactsArray = JSON.parse(localStorage.getItem('contacts'));
     if (!contactsArray) return;
-    setContacts(contactsArray);
-  },[])
+    dispatch(change(contactsArray));
+  },[dispatch])
 
   useEffect(()=>{
     localStorage.setItem('contacts', JSON.stringify(contacts));
   },[contacts])
 
-  const addContact = (contact) =>{
-    let arraysOfName=[];
-    contacts.map(element=> (
-        arraysOfName.push(element.name) 
-    ));
-    if (!arraysOfName.includes(contact.name)) {
-      setContacts([...contacts, contact])
-    } else {
-      alert(`${contact.name} is alredy in contacts`)
-    }
-  }
-
-  const deleteContact=(id) =>{
-    setContacts(contacts.filter(contact=> contact.id!==id))
-  }
-
-  const searchByName =(name)=> {
-    setFilter(name.toLowerCase())
-  }
 
   const getVisibleContacts=()=>{
     return contacts.filter(contact =>
@@ -47,10 +30,10 @@ export const App = () => {
   return (
     <Layout>
       <h1>Phonebook</h1>
-      <ContactForm addContact={addContact}/>
+      <ContactForm/>
       <h2>Contacts</h2>
-      <FilterContacts searchByName={searchByName}/>
-      <ContactList contacts={getVisibleContacts()} deleteContact={deleteContact}/> 
+      <FilterContacts/>
+      <ContactList contacts={getVisibleContacts()}/> 
     </Layout>
   );
 }
