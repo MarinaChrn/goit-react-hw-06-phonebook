@@ -1,7 +1,7 @@
 import { StyledButton, StyledElement } from "./ContactElement.styled";
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from "react-redux";
-import { change } from "redux/contacts/contatctsSlice";
+import { change } from "redux/contacts/contactsSlice";
 
 export const ContactElement = ({contact})=> {
     const contacts = useSelector(state => state.contacts.array);
