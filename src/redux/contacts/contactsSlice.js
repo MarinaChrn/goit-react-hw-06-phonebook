@@ -5,7 +5,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const contactsSlice = createSlice({
   name: 'contacts',
   initialState: {
-    array: JSON.parse(localStorage.getItem('persist:contactsArray'))["array"]&&[],
+    array: JSON.parse(localStorage.getItem('persist:contactsArray'))||[],
   },
   reducers: {
     change(state, action) {
